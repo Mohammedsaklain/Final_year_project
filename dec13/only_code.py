@@ -1,4 +1,4 @@
-#In this code, the output is stored in result.txt file and no other print lines are there, even in the beginning
+#In this code, the output is stored in result.io file and no other print lines are there, even in the beginning
 
 import openai
 
@@ -26,7 +26,7 @@ try:
             answer = GPT(query)
             print(answer)  # Only prints the answer
             
-            with open('result.txt', 'a') as file:  # Changed file name to 'result.txt'
+            with open('result.io', 'a') as file:  # Changed file name to 'result.txt'
                 file.write(answer + "\n")  # File only logs the answer.
 except KeyboardInterrupt:
     print()  # Prints a new line for clean exit
