@@ -7,3 +7,12 @@ Traceback (most recent call last):
 FileNotFoundError: [Errno 2] No such file or directory: 'result/result.ino.hex' -> 'result/result.hex'
 
 arduino-cli core install arduino:avr
+
+Used platform Version Path                                                            
+arduino:avr   1.8.6   /home/raspberrypi/.arduino15/packages/arduino/hardware/avr/1.8.6
+Error during build: Sketch cannot be located in build path. Please specify a different build path
+Compilation successful
+Traceback (most recent call last):
+  File "/home/raspberrypi/Desktop/chat_gpt.py", line 56, in <module>
+    os.rename(os.path.join(result_folder, "result.ino.hex"), output_hex_path)
+FileNotFoundError: [Errno 2] No such file or directory: 'result/result.ino.hex' -> 'result/result.hex'
