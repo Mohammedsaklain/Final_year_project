@@ -1,0 +1,2 @@
+/bin/sh: 1: arduino-cli: not found
+Compilation failed with the following error: Command 'arduino-cli compile --fqbn Arduino uno result/result.ino --output-dir result' returned non-zero exit status 127.
