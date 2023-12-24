@@ -1,3 +1,35 @@
+4.try:
+    while True:
+        query = input()
+        if query in exit_words:
+            break  # Ends the chat without printing "ENDING CHAT"
+        else:
+            answer = GPT(query)
+            print(answer)  # Only prints the answer
+            
+            # Define the path to the .ino file within the result folder
+            file_path = os.path.join(result_folder, 'result.ino')
+            
+            # Write the answer to the result.ino file in the result folder
+            with open(file_path, 'w') as file:  # Use 'w' mode to overwrite the existing content
+                file.write(answer + "\n")  # File only logs the answer.
+            
+            # Compile the .ino file and save the output hex file
+            output_hex_path = os.path.join(result_folder, 'result.hex')
+            build_path = os.path.join(result_folder, 'build')  # Define a separate build path
+            command = f"arduino-cli compile --fqbn {board_fqbn} {file_path} --output-dir {result_folder} --build-path {build_path}"
+            subprocess.run(command, shell=True)
+            print("Compilation successful")  # Prints a message to indicate successful compilation
+            new_hex_path = os.path.join(build_path, "result.ino.hex")
+            os.rename(new_hex_path, output_hex_path)
+            print(f"Output hex file saved at: {output_hex_path}")
+
+except KeyboardInterrupt:
+    print()  # Prints a new line for clean exit
+
+
+
+
 3.import openai
 import os
 import subprocess
