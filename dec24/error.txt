@@ -39,3 +39,7 @@ To resolve this, you need to ensure that `arduino-cli` is correctly installed an
    The compilation step should automatically generate a HEX file if it's successful. Usually, the HEX file will be stored in the specified output directory.
 
 If you follow these steps and find that `arduino-cli` is still not found, ensure that the PATH is set correctly and that the `arduino-cli` binary has the executable permission (`chmod +x arduino-cli`). If you want to use Arduino IDE instead of arduino-cli, the command and setup process will differ.  
+
+
+/bin/sh: 1: arduino-cli: not found
+Compilation failed with the following error: Command 'arduino-cli compile --fqbn arduino result/result.ino --output-dir result' returned non-zero exit status 127.
