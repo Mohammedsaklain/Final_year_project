@@ -1,13 +1,38 @@
 3.import openai
 import os
 import subprocess
-import shutil
 
-# ... (other code remains the same)
+model_engine = "text-davinci-003"
+openai.api_key = "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"
+
+def GPT(query):
+    response = openai.Completion.create(
+        engine=model_engine,
+        prompt=query,
+        max_tokens=1024,
+        temperature=0.5,
+    )
+    
+    return response['choices'][0]['text'].strip()
+
+result_folder = 'result'
+if not os.path.exists(result_folder):
+    os.makedirs(result_folder)  # Create the result directory if it doesn't exist
+
+exit_words = ("q", "Q", "quit", "QUIT", "EXIT")
+
+while True:
+    board = input("Which board do you want to use? (Arduino Uno/Arduino Nano): ")
+    if board.lower() == "arduino uno":
+        board_fqbn = "arduino:avr:uno"
+        break
+    elif board.lower() == "arduino nano":
+        board_fqbn = "arduino:avr:nano"
+        break
+    else:
+        print("Invalid board selection. Please try again.")
 
 try:
-    # ... (other code remains the same)
-
     while True:
         query = input()
         if query in exit_words:
