@@ -1,45 +1,57 @@
-/bin/sh: 1: arduino-cli: not found
-Compilation failed with the following error: Command 'arduino-cli compile --fqbn Arduino uno result/result.ino --output-dir result' returned non-zero exit status 127.
+import openai
+import os
+import subprocess
 
+model_engine = "text-davinci-003"
+openai.api_key = "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"
 
+def GPT(query):
+    response = openai.Completion.create(
+        engine=model_engine,
+        prompt=query,
+        max_tokens=1024,
+        temperature=0.5,
+    )
+    
+    return response['choices'][0]['text'].strip()
 
-The error message you're encountering, `/bin/sh: 1: arduino-cli: not found`, indicates that the `arduino-cli` command-line tool is not installed on your Raspberry Pi OS or is not in the system's PATH.
+result_folder = 'result'
+if not os.path.exists(result_folder):
+    os.makedirs(result_folder)  # Create the result directory if it doesn't exist
 
-To resolve this, you need to ensure that `arduino-cli` is correctly installed and accessible from anywhere in your system. Here's how to install and set up `arduino-cli` on the Raspberry Pi:
+exit_words = ("q", "Q", "quit", "QUIT", "EXIT")
 
-1. **Install arduino-cli:**
-   You can download the latest version of `arduino-cli` from the official GitHub repository:
-   ```sh
-   curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
-   ```
+while True:
+    board = input("Which board do you want to use? (Arduino Uno/Arduino Nano): ")
+    if board.lower() == "arduino uno":
+        board_fqbn = "arduino:avr:uno"
+        break
+    elif board.lower() == "arduino nano":
+        board_fqbn = "arduino:avr:nano"
+        break
+    else:
+        print("Invalid board selection. Please try again.")
 
-2. **Add arduino-cli to the PATH:**
-   If the installation script doesn't automatically add `arduino-cli` to your path, you might need to do it manually.
-   ```sh
-   export PATH=$PATH:/path-to-arduino-cli
-   ```
-   Replace `/path-to-arduino-cli` with the actual path to the `arduino-cli` binary. You might want to add this line to your `.bashrc` or `.bash_profile` to ensure it persists across sessions.
+try:
+    while True:
+        query = input()
+        if query in exit_words:
+            break  # Ends the chat without printing "ENDING CHAT"
+        else:
+            answer = GPT(query)
+            print(answer)  # Only prints the answer
+            
+            # Define the path to the .ino file within the result folder
+            file_path = os.path.join(result_folder, 'result.ino')
+            
+            # Write the answer to the result.ino file in the result folder
+            with open(file_path, 'w') as file:  # Use 'w' mode to overwrite the existing content
+                file.write(answer + "\n")  # File only logs the answer.
+            
+            # Compile the .ino file and save the output hex file
+            command = "arduino-cli compile --fqbn " + board_fqbn + " " + file_path + " --output-dir " + result_folder
+            subprocess.run(command, shell=True)
+            print("Compilation successful")  # Prints a message to indicate successful compilation
 
-3. **Update arduino-cli's core:**
-   Before using `arduino-cli`, make sure to update the core libraries and install the necessary core for your Arduino board:
-   ```sh
-   arduino-cli core update-index
-   arduino-cli core install arduino:avr
-   ```
-   This command installs the core for AVR-based Arduino boards; if you're using a different board, you might need to install a different core.
-
-4. **Compile the Sketch:**
-   Once `arduino-cli` is installed and configured, you should be able to compile your sketch with the command you provided:
-   ```sh
-   arduino-cli compile --fqbn {board_name} {file_path} --output-dir {result_folder}
-   ```
-   Ensure that `{board_name}` is the fully qualified board name as recognized by `arduino-cli`. For example, it could be `arduino:avr:uno` for an Arduino Uno.
-
-5. **Generate the HEX file:**
-   The compilation step should automatically generate a HEX file if it's successful. Usually, the HEX file will be stored in the specified output directory.
-
-If you follow these steps and find that `arduino-cli` is still not found, ensure that the PATH is set correctly and that the `arduino-cli` binary has the executable permission (`chmod +x arduino-cli`). If you want to use Arduino IDE instead of arduino-cli, the command and setup process will differ.  
-
-
-/bin/sh: 1: arduino-cli: not found
-Compilation failed with the following error: Command 'arduino-cli compile --fqbn arduino result/result.ino --output-dir result' returned non-zero exit status 127.
+except KeyboardInterrupt:
+    print()  # Prints a new line for clean exit
