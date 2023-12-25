@@ -1,0 +1,72 @@
+// In this code i got an output, the prompt is given and output code and hex file is generated
+
+import openai
+import os
+import subprocess
+
+model_engine = "text-davinci-003"
+openai.api_key = "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"
+
+def GPT(query):
+    response = openai.Completion.create(
+        engine=model_engine,
+        prompt=query,
+        max_tokens=1024,
+        temperature=0.5,
+    )
+    
+    return response['choices'][0]['text'].strip()
+
+result_folder = 'result'
+if not os.path.exists(result_folder):
+    os.makedirs(result_folder)  # Create the result directory if it doesn't exist
+
+exit_words = ("q", "Q", "quit", "QUIT", "EXIT")
+
+while True:
+    board = input("Which board do you want to use? (Arduino Uno/Arduino Nano): ")
+    if board.lower() == "arduino uno":
+        board_fqbn = "arduino:avr:uno"
+        break
+    elif board.lower() == "arduino nano":
+        board_fqbn = "arduino:avr:nano"
+        break
+    else:
+        print("Invalid board selection. Please try again.")
+
+try:
+    while True:
+        query = input()
+        if query in exit_words:
+            break  # Ends the chat without printing "ENDING CHAT"
+        else:
+            answer = GPT(query)
+            print(answer)  # Only prints the answer
+            
+            # Define the path to the .ino file within the result folder
+            file_path = os.path.join(result_folder, 'result.ino')
+            
+            # Write the answer to the result.ino file in the result folder
+            with open(file_path, 'w') as file:  # Use 'w' mode to overwrite the existing content
+                file.write(answer + "\n")  # File only logs the answer.
+            
+            # Compile the .ino file and save the output hex file
+            build_path = os.path.join(result_folder, 'build')  # Define a separate build path
+            command = f"arduino-cli compile --fqbn {board_fqbn} {file_path} --output-dir {result_folder} --build-path {build_path}"
+            subprocess.run(command, shell=True)
+            print("Compilation successful")  # Prints a message to indicate successful compilation
+            new_hex_path = os.path.join(build_path, "result.ino.hex")
+            output_folder = os.path.join(result_folder, 'hex_files')  # Define a separate folder for storing hex files
+            os.makedirs(output_folder, exist_ok=True)  # Create the folder if it doesn't exist
+            output_hex_path = os.path.join(output_folder, 'result.hex')  # Define the path for the main hex file
+            os.rename(new_hex_path, output_hex_path)
+            print(f"Output hex file saved at: {output_hex_path}")
+            
+            # Clean up unnecessary files
+            os.remove(os.path.join(result_folder, "result.ino"))
+            os.remove(os.path.join(build_path, "result.ino.eep"))
+
+except KeyboardInterrupt:
+    print()  # Prints a new line for clean exit
+
+
