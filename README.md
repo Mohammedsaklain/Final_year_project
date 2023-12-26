@@ -2,6 +2,10 @@
 This file was created on 12-10-2023 at 10:37
 
 
+![device_flow drawio](https://github.com/Mohammedsaklain/Final_year_project/assets/85921230/b860ef09-0b7e-4998-a1a3-1a8f7b23125c)
+
+
+
 Please use different API KEY, this key is no longer accessible
 
 - 1. Set up the required modules and API keys.
