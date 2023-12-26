@@ -4,7 +4,7 @@ This file was created on 12-10-2023 at 10:37
 
 Please use different API KEY, this key is no longer accessible
 
-*!. Set up the required modules and API keys.
+- 1. Set up the required modules and API keys.
 *2. Create a function called GPT that uses OpenAI's GPT-3 engine to generate a response based on the input query.
 *3. Create a result folder if it doesn't exist.
 *4. Start an input loop to select the board type ("Arduino Uno" or "Arduino Nano").
