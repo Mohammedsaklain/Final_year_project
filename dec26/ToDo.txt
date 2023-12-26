@@ -1,0 +1,1 @@
+I've an idea, can i preinstall a set of library's later if the code ask for any kind of hearder file then it automatically checks the library folder, also if there is a condition where user demands to add user defined header file then the code takes that file and store it in library folder, can we do this
