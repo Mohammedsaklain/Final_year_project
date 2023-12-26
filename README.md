@@ -33,7 +33,8 @@ Please use different API KEY, this key is no longer accessible
 - 14. Handle the interruption of the process by the user (if keyboard interruption occurs).
 
 
-<img src="code_diagram.drawio.png" alt="drawing" style="width:200px;"/>
+
+![code_diagram drawio](https://github.com/Mohammedsaklain/Final_year_project/assets/85921230/9ab8c2ed-5560-4e84-ae27-21f79543c6d5)
 
       
 
