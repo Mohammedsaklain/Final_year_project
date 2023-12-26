@@ -31,3 +31,7 @@ Please use different API KEY, this key is no longer accessible
 - 13. Clean up the source .ino file after completion of each iteration.
 
 - 14. Handle the interruption of the process by the user (if keyboard interruption occurs).
+
+
+
+                  ![transparent_code_dia](https://github.com/Mohammedsaklain/Final_year_project/assets/85921230/b06c3119-f085-4fe5-85fa-d9fd626822dd)
