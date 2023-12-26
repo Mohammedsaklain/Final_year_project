@@ -33,6 +33,5 @@ Please use different API KEY, this key is no longer accessible
 - 14. Handle the interruption of the process by the user (if keyboard interruption occurs).
 
 
-
-                                      ![code_diagram drawio](https://github.com/Mohammedsaklain/Final_year_project/assets/85921230/75c4e3c3-0cea-4dc9-a042-b215fa3a5ec5)
+      ![code_diagram drawio](https://github.com/Mohammedsaklain/Final_year_project/assets/85921230/75c4e3c3-0cea-4dc9-a042-b215fa3a5ec5)
 
