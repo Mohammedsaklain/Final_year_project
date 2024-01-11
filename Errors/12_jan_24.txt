@@ -1,0 +1,19 @@
+Type q, Q, quit, QUIT or EXIT and press Enter to end the chat session
+What is your question?> who are you
+Traceback (most recent call last):
+  File "/home/raspberrypi/Desktop/chat_gpt.py", line 21, in <module>
+    (res, usage) = GPT(query)
+  File "/home/raspberrypi/Desktop/chat_gpt.py", line 5, in GPT
+    response = openai.Completion.create(
+  File "/home/raspberrypi/.local/lib/python3.9/site-packages/openai/api_resources/completion.py", line 25, in create
+    return super().create(*args, **kwargs)
+  File "/home/raspberrypi/.local/lib/python3.9/site-packages/openai/api_resources/abstract/engine_api_resource.py", line 153, in create
+    response, _, api_key = requestor.request(
+  File "/home/raspberrypi/.local/lib/python3.9/site-packages/openai/api_requestor.py", line 298, in request
+    resp, got_stream = self._interpret_response(result, stream)
+  File "/home/raspberrypi/.local/lib/python3.9/site-packages/openai/api_requestor.py", line 700, in _interpret_response
+    self._interpret_response_line(
+  File "/home/raspberrypi/.local/lib/python3.9/site-packages/openai/api_requestor.py", line 765, in _interpret_response_line
+    raise self.handle_error_response(
+openai.error.InvalidRequestError: The model `text-davinci-003` has been deprecated, learn more here: https://platform.openai.com/docs/deprecations
+>>> 
