@@ -1,3 +1,5 @@
+////////////
+1. 
 Type q, Q, quit, QUIT or EXIT and press Enter to end the chat session
 What is your question?> who are you
 Traceback (most recent call last):
@@ -17,3 +19,13 @@ Traceback (most recent call last):
     raise self.handle_error_response(
 openai.error.InvalidRequestError: The model `text-davinci-003` has been deprecated, learn more here: https://platform.openai.com/docs/deprecations
 >>> 
+
+----------------SOL--------------------
+
+The error you're encountering is due to the deprecation of the "text-davinci-003" model, which is no longer supported by the OpenAI API. To resolve this issue, you need to update the model engine to a supported version. The new model name is "davinci-codex."
+
+Update this line in your code:  model_engine = "davinci-codex"
+
+
+
+
