@@ -9,7 +9,7 @@ import subprocess
 
 
 model_engine = "gpt-3.5-turbo"
-openai.api_key = "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"
+openai.api_key = "API"
 # Removed the API Key for security reasons
 
 def GPT(query):
