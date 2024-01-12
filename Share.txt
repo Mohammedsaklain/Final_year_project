@@ -26,3 +26,17 @@ openai.error.RateLimitError: You exceeded your current quota, please check your 
 
 6. echo 'export PATH=$PATH:~/.arduino15/bin' >> ~/.bashrc
 source ~/.bashrc
+
+7. What is your question?> write an arduino code to blink an led connected to pin number 7
+Code saved to 'result/result.ino'
+Sketch uses 924 bytes (2%) of program storage space. Maximum is 32256 bytes.
+Global variables use 9 bytes (0%) of dynamic memory, leaving 2039 bytes for local variables. Maximum is 2048 bytes.
+
+Used platform Version Path
+arduino:avr   1.8.6   /home/raspberrypi/.arduino15/packages/arduino/hardware/avr/1.8.6
+Main HEX file compiled
+Traceback (most recent call last):
+  File "/home/raspberrypi/Desktop/chat_gpt.py", line 60, in <module>
+    os.rename('result.ino.with_bootloader.hex', '../hex/result.hex')
+FileNotFoundError: [Errno 2] No such file or directory: 'result.ino.with_bootloader.hex' -> '../hex/result.hex'
+>>> 
