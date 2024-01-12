@@ -18,3 +18,5 @@ Traceback (most recent call last):
     raise self.handle_error_response(
 openai.error.RateLimitError: You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
 >>> 
+4. Compilation failed.
+/bin/sh: 1: arduino-cli: not found
