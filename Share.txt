@@ -20,3 +20,7 @@ openai.error.RateLimitError: You exceeded your current quota, please check your 
 >>> 
 4. Compilation failed.
 /bin/sh: 1: arduino-cli: not found
+
+
+5. curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+
