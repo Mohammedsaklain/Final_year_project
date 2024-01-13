@@ -1,3 +1,16 @@
+file_path = os.path.join(result_folder, "result.ino")
+with open(file_path, "w") as file:
+    file.write(code)
+
+print(f"Code saved to '{file_path}'")
+
+# Execute Arduino CLI to compile and upload the code
+subprocess.run(['/home/raspberrypi/Arduino/Arduino/arduino-cli', 'compile', '-b', 'arduino:avr:uno', '--output-dir', '../hex', file_path], check=True)
+
+
+
+
+
 
 import openai
 import re
