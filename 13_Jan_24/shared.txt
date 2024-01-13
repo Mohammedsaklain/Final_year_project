@@ -1,0 +1,154 @@
+
+import openai
+import re
+import os
+import subprocess
+import shutil
+from glob import glob
+
+model_engine = "gpt-3.5-turbo"
+
+openai.api_key =  "api"
+
+def GPT(query):
+    response = openai.ChatCompletion.create(
+        model=model_engine,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": query}
+        ]
+    )
+    return response['choices'][0]['message']['content'].strip()
+
+exit_words = ("q", "Q", "quit", "QUIT", "EXIT")
+
+result_folder = 'result'
+hex_folder = 'hex'
+
+if not os.path.exists(result_folder):
+    os.makedirs(result_folder)
+
+if not os.path.exists(hex_folder):
+    os.makedirs(hex_folder)
+
+try:
+    while True:
+        print("Type q, Q, quit, QUIT, or EXIT and press Enter to end the chat session")
+        query = input("What is your question?> ")
+        if query in exit_words:
+            print("ENDING CHAT")
+            break
+        else:
+            response = GPT(query)
+
+            # Extract the code block using regular expressions
+            code_match = re.search(r'```cpp\n(.*?)\n```', response, re.DOTALL)
+            if code_match:
+                code = code_match.group(1)
+
+                # Write the code to "result.ino" inside the 'result' folder
+                file_path = os.path.join(result_folder, "result.ino")
+                with open(file_path, "w") as file:
+                    file.write(code)
+
+                print(f"Code saved to '{file_path}'")
+
+                # Execute Arduino CLI to compile and upload the code
+                subprocess.run(['/home/raspberrypi/Arduino/Arduino/arduino-cli', 'compile', '-b', 'arduino:avr:uno', '-o', '../hex', 'result.ino'], check=True)
+
+                print("Main HEX file compiled")
+
+                # Find the HEX file in the 'hex' folder
+                hex_files = glob('../hex/*.hex')
+                if hex_files:
+                    hex_file_path = hex_files[0]
+
+                    # Copy the HEX file directly to the 'hex' folder
+                    shutil.copy(hex_file_path, os.path.join(hex_folder, 'result.hex'))
+
+                    print(f"HEX file '{hex_file_path}' copied to 'hex' folder")
+
+                    # Clean up unnecessary files
+                    os.remove(file_path)
+                    os.remove(hex_file_path)
+
+                    print("Cleaned up unnecessary files")
+                    print("=" * 20)
+                else:
+                    print("Error: HEX file not found.")
+
+except KeyboardInterrupt:
+    print("\nExiting ChatGPT")
+
+
+
+
+
+
+
+>>> %Run chat_gpt.py
+Type q, Q, quit, QUIT, or EXIT and press Enter to end the chat session
+What is your question?> write an arduino code to blink an led connected to pin number 7
+Type q, Q, quit, QUIT, or EXIT and press Enter to end the chat session
+What is your question?> write an arduino code to blink an led connected to pin number 6
+Code saved to 'result/result.ino'
+Error: unknown shorthand flag: 'o' in -o
+Usage:
+  arduino-cli compile [flags]
+
+Examples:
+  /home/raspberrypi/Arduino/Arduino/arduino-cli compile -b arduino:avr:uno /home/user/Arduino/MySketch
+  /home/raspberrypi/Arduino/Arduino/arduino-cli compile -b arduino:avr:uno --build-property "build.extra_flags=\"-DMY_DEFINE=\"hello world\"\"" /home/user/Arduino/MySketch
+  /home/raspberrypi/Arduino/Arduino/arduino-cli compile -b arduino:avr:uno --build-property "build.extra_flags=-DPIN=2 \"-DMY_DEFINE=\"hello world\"\"" /home/user/Arduino/MySketch
+  /home/raspberrypi/Arduino/Arduino/arduino-cli compile -b arduino:avr:uno --build-property build.extra_flags=-DPIN=2 --build-property "compiler.cpp.extra_flags=\"-DSSID=\"hello world\"\"" /home/user/Arduino/MySketch
+
+
+Flags:
+      --board-options strings                 List of board options separated by commas. Or can be used multiple times for multiple options.
+      --build-cache-path string               Builds of 'core.a' are saved into this path to be cached and reused.
+      --build-path string                     Path where to save compiled files. If omitted, a directory will be created in the default temporary path of your OS.
+      --build-property stringArray            Override a build property with a custom value. Can be used multiple times for multiple properties.
+      --clean                                 Optional, cleanup the build folder and do not use any cached build.
+      --discovery-timeout duration            Max time to wait for port discovery, e.g.: 30s, 1m (default 1s)
+      --dump-profile                          Create and print a profile configuration from the build.
+      --encrypt-key string                    The name of the custom encryption key to use to encrypt a binary during the compile process. Used only by the platforms that support it.
+  -e, --export-binaries                       If set built binaries will be exported to the sketch folder.
+  -b, --fqbn string                           Fully Qualified Board Name, e.g.: arduino:avr:uno
+  -h, --help                                  help for compile
+      --keys-keychain string                  The path of the dir to search for the custom keys to sign and encrypt a binary. Used only by the platforms that support it.
+      --libraries strings                     Path to a collection of libraries. Can be used multiple times or entries can be comma separated.
+      --library strings                       Path to a single library’s root folder. Can be used multiple times or entries can be comma separated.
+      --only-compilation-database             Just produce the compilation database, without actually compiling. All build commands are skipped except pre* hooks.
+      --optimize-for-debug                    Optional, optimize compile output for debugging, rather than for release.
+      --output-dir string                     Save build artifacts in this directory.
+  -p, --port string                           Upload port address, e.g.: COM3 or /dev/ttyACM2
+      --preprocess                            Print preprocessed code to stdout instead of compiling.
+  -m, --profile string                        Sketch profile to use
+  -P, --programmer string                     Programmer to use, e.g: atmel_ice
+  -l, --protocol string                       Upload port protocol, e.g: serial
+      --quiet                                 Optional, suppresses almost every output.
+      --show-properties string[="expanded"]   Show build properties. The properties are expanded, use "--show-properties=unexpanded" if you want them exactly as they are defined. (default "disabled")
+      --sign-key string                       The name of the custom signing key to use to sign a binary during the compile process. Used only by the platforms that support it.
+  -u, --upload                                Upload the binary after the compilation.
+  -v, --verbose                               Optional, turns on verbose mode.
+  -t, --verify                                Verify uploaded binary after the upload.
+      --warnings string                       Optional, can be: none, default, more, all. Used to tell gcc which warning level to use (-W flag). (default "none")
+
+Global Flags:
+      --additional-urls strings   Comma-separated list of additional URLs for the Boards Manager.
+      --config-file string        The custom config file (if not specified the default will be used).
+      --format string             The output format for the logs, can be: text, json, jsonmini, yaml (default "text")
+      --log                       Print the logs on the standard output.
+      --log-file string           Path to the file where logs will be written.
+      --log-format string         The output format for the logs, can be: text, json
+      --log-level string          Messages with this level and above will be logged. Valid levels are: trace, debug, info, warn, error, fatal, panic
+      --no-color                  Disable colored output.
+
+unknown shorthand flag: 'o' in -o
+Traceback (most recent call last):
+  File "/home/raspberrypi/Desktop/chat_gpt.py", line 57, in <module>
+    subprocess.run(['/home/raspberrypi/Arduino/Arduino/arduino-cli', 'compile', '-b', 'arduino:avr:uno', '-o', '../hex', 'result.ino'], check=True)
+  File "/usr/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/home/raspberrypi/Arduino/Arduino/arduino-cli', 'compile', '-b', 'arduino:avr:uno', '-o', '../hex', 'result.ino']' returned non-zero exit status 1.
+>>> 
