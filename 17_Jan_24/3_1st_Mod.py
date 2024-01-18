@@ -1,3 +1,6 @@
+#In earlier code logic, first only while the prompt is given, i should specify that i want code for this board, but instead the code prior only should ask for which board i should get the code and then the prompt will be taken, also when the code is compiled the result.ino file is being deleted and i want that file for verification , afterward this file should be compiled and main hex file only be stored (along with .ino file)other than extra files(like eep,esp etc), So all the above mistakes are tried to fix
+
+
 import openai
 import re
 import os
