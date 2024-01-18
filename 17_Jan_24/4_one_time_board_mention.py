@@ -1,3 +1,7 @@
+#Frst i should have prior mention like i want the code for Arduino Uno, afterwards also while giving prompt i've to mention that write an arduin code to blink an led , but instead modified like when first only i mention arduino uno board, the code should identify that i'm requesting for that board only, so then i will just enter command like write code to blink led at pin 7, can you modify this code according to it
+
+
+
 import openai
 import re
 import os
